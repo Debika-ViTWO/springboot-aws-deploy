@@ -6,7 +6,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 047447425414.dkr.ecr.ap-south-1.amazonaws.com
-      - REPOSITORY_URI=047447425414.dkr.ecr.ap-south-1.amazonaws.com/javatest-registry
+      - REPOSITORY_URI=047447425414.dkr.ecr.ap-south-1.amazonaws.com/java-test-prod
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - echo Repository URI: $REPOSITORY_URI
       - echo Image Tag: $IMAGE_TAG
@@ -24,7 +24,7 @@ phases:
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
       - echo Writing imagedefinitions.json for ECS...
-      - printf '[{"name":"javatest-container","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"java-test-container","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files: imagedefinitions.json
