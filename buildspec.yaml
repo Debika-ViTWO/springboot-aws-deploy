@@ -1,5 +1,9 @@
 version: 0.2
 
+env:
+  variables:
+    REPOSITORY_URI: 047447425414.dkr.ecr.ap-south-1.amazonaws.com/java-test-prod
+
 phases:
   install:
     runtime-versions:
@@ -11,10 +15,9 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 047447425414.dkr.ecr.ap-south-1.amazonaws.com
+      - aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
       - echo Building JAR...
       - mvn clean package -DskipTests
-      - REPOSITORY_URI=047447425414.dkr.ecr.ap-south-1.amazonaws.com/java-test-prod
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
 
   build:
